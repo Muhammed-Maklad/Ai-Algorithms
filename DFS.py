@@ -1,20 +1,17 @@
-def bfs(graph, start, goal):
-    visited = [] 
-    queue = [[start]]
-    while queue:
-        path = queue.pop(0)    
-        node = path[-1]
-        if node in visited: 
-            continue
-        visited.append(node)
-        if node == goal:
-            return path
-        else:
-            adjacent = graph.get(node, [])
-            for neighbor in adjacent:
-                new_path = list(path) 
-                new_path.append(neighbor)
-                queue.append(new_path) 
+def dfs (graph , start, goal,visted=None):
+    if visted is None:
+        visted=[]
+    visted.append(start)
+
+    if start == goal:
+        return [start]
+    
+    for neighbour in graph.get(start,[]):
+        if neighbour not in visted:
+            path = dfs(graph , neighbour, goal,visted.copy())
+            if path:
+                return [start]+path
+    return None
 
 graph = {
   'A': ['B', 'C'],
@@ -25,5 +22,5 @@ graph = {
   'F': []
 }
 
-solution = bfs(graph, 'A', 'F')
+solution = dfs(graph, 'A', 'F')
 print(solution)
